@@ -1,5 +1,44 @@
 #include <iostream>
 #include <vector>
+#include <utility> // Required for std::swap
+
+using namespace std;
+
+int main() {
+    // --- Insertion Sort using swap ---
+    cout << "--- Insertion Sort (using swap) ---" << endl;
+
+    vector<int> arr = {12, 11, 13, 5, 6};
+    int n = arr.size();
+
+    cout << "Original array: ";
+    for (int val : arr) cout << val << " ";
+    cout << endl;
+
+    // Start from the second element
+    for (int i = 1; i < n; i++) {
+        // 'j' is the index of the element we want to insert correctly
+        int j = i;
+
+        // Keep swapping the element at 'j' with the one to its left
+        // as long as it's smaller than its left neighbor.
+        while (j > 0 && arr[j] < arr[j - 1]) {
+            swap(arr[j], arr[j - 1]);
+            // Move our focus one position to the left
+            j--;
+        }
+    }
+
+    cout << "Sorted array:   ";
+    for (int val : arr) cout << val << " ";
+    cout << endl;
+
+    return 0;
+}
+
+
+/*#include <iostream>
+#include <vector>
 
 using namespace std;
 
@@ -33,4 +72,4 @@ int main() {
     cout << endl;
 
     return 0;
-}
+}*/

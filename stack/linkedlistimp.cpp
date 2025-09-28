@@ -2,40 +2,43 @@
 
 using namespace std;
 
-#define MAX_SIZE 10 // Let's define a maximum size for our stack
+// A node in the linked list
+class Node {
+public:
+    int data;     // The data value of the node
+    Node* next;   // Pointer to the next node in the list
+};
 
-class ArrayStack {
+class LinkedListStack {
 private:
-    // --- Data Members (the class's private variables) ---
-    int arr[MAX_SIZE]; // The array that holds the stack elements [cite: 149]
-    int top;           // An index that points to the top element [cite: 151]
+    // --- Data Member ---
+    Node* top; // A pointer that always points to the top of the stack
 
 public:
-    // --- Member Functions (the class's public methods) ---
+    // --- Member Functions ---
 
-    // Constructor: Initializes the stack
-    ArrayStack() {
-        top = -1; // -1 means the stack is initially empty 
-    }
-
-    // Method to check if the stack is full
-    bool isFull() {
-        return top == MAX_SIZE - 1; // It's full if top is at the last index [cite: 153]
+    // Constructor: Initializes an empty stack
+    LinkedListStack() {
+        top = nullptr; // nullptr means the stack is initially empty
     }
 
     // Method to check if the stack is empty
     bool isEmpty() {
-        return top == -1; // It's empty if top is -1 [cite: 167]
+        return top == nullptr; // It's empty if top points to nothing
     }
 
     // Method to push (add) an element to the stack
     void push(int value) {
-        if (isFull()) {
-            cout << "Stack OVERFLOW! Cannot push " << value << endl;
-            return;
-        }
-        top++;            // Move the top index up [cite: 158]
-        arr[top] = value; // Place the new value at the top [cite: 160]
+        // 1. Create a new node
+        Node* newNode = new Node();
+        newNode->data = value;
+
+        // 2. Link the new node to the current top
+        newNode->next = top;
+
+        // 3. Update top to be the new node
+        top = newNode;
+
         cout << value << " pushed to stack." << endl;
     }
 
@@ -45,8 +48,16 @@ public:
             cout << "Stack UNDERFLOW! Cannot pop." << endl;
             return;
         }
-        int popped_value = arr[top]; // Get the top value [cite: 173]
-        top--;                       // Move the top index down [cite: 175]
+        // 1. Store the current top to delete it later
+        Node* temp = top;
+        int popped_value = top->data;
+
+        // 2. Move the top pointer to the next node
+        top = top->next;
+
+        // 3. Free the memory of the old top node
+        delete temp;
+
         cout << popped_value << " popped from stack." << endl;
     }
 
@@ -56,7 +67,7 @@ public:
             cout << "Stack is empty. Nothing to peek." << endl;
             return -1; // Return an error value
         }
-        return arr[top]; // Return the element at the top index [cite: 133]
+        return top->data; // Return the data from the top node
     }
 
     // Method to display the stack contents
@@ -66,16 +77,18 @@ public:
             return;
         }
         cout << "Stack (top to bottom): ";
-        for (int i = top; i >= 0; i--) {
-            cout << arr[i] << " ";
+        Node* current = top; // Start from the top
+        while (current != nullptr) {
+            cout << current->data << " ";
+            current = current->next; // Move to the next node
         }
         cout << endl;
     }
 };
 
 int main() {
-    cout << "--- Array Stack Demo ---" << endl;
-    ArrayStack myStack; // Create a stack object from our class
+    cout << "--- Linked List Stack Demo ---" << endl;
+    LinkedListStack myStack; // Create a stack object from our class
 
     myStack.push(10);
     myStack.push(20);
